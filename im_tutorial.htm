@@ -1,0 +1,380 @@
+Welcome! Today we'll learn how to setup your own instant messaging network. First we'll look at the basics and after that we're going to start coding. Let's begin!<br />
+<br />
+<b>How does a instant messaging network work?</b><br />
+<br />
+Below is a chart of what a instant messaging network is like:<br />
+<br />
+<a href="http://img225.imageshack.us/my.php?image=chartsc1.png" target="_blank"><img src="http://img225.imageshack.us/img225/2780/chartsc1.th.png" border="0" alt="Free Image Hosting at www.ImageShack.us" /></a><br />
+<br />
+You'll see there is one server and many, many users. Because of the many users that use for example MSN there are more servers, but I don't think your program will be so popular...<br />
+<br />
+Well, in this network it goes this way;<br />
+<br />
+For example user 1 logs in then - if user 2 has him or she in his list - user 2 will get a message. If user 2 sends a message, the person who must receive the message get's a message from the server. His client will popup a new window ore adds text to an existing one.<br />
+<br />
+<b>Planning</b><br />
+<br />
+Today we're going to create this in Visual Basic. Like I said you can make this with other languages too, but they're not covered.<br />
+<br />
+First we are going to create the server with a database of users, the winsock system etc. After that we're going to create the clients.<br />
+<br />
+Are you ready? Let's go!<br />
+<br />
+<b>Creating the server</b><br />
+<br />
+Alright, for the server you can use a couple of listboxes/listviews or a MS Access database. I'll use a listview in this tutorial, 'cause it works easy and it's comfortable. Of course we write an save function for in case of the server is down.<br />
+<br />
+1. First create a new project (Standard EXE)<br />
+2. Add the component Microsoft Windows Common Controls SP6<br />
+3. Put a ListView on the form. I call it lstUsers.<br />
+4. Right click on the listview and click Properties.<br />
+5. Use this properties in the General tab:<br />
+View = lvwReport<br />
+6. Now go to the tab Column Headers and press Insert Column for 7 times.<br />
+<br />
+Call the columns:<br />
+ID<br />
+Username<br />
+Password<br />
+State<br />
+Nickname<br />
+Banned<br />
+Contacts<br />
+7. Press OK and launch the program (F5)<br />
+8. Shut down and resize the listview so that all items can be viewed without need of scrolling.<br />
+9. Now create the buttons:<br />
+Add account<br />
+Delete account<br />
+Ban account<br />
+Unban account<br />
+Save list<br />
+Open list<br />
+<br />
+Now you have something like this:<br />
+<br />
+<a href="http://img176.imageshack.us/my.php?image=screenyp5.png" target="_blank"><img src="http://img176.imageshack.us/img176/6269/screenyp5.th.png" border="0" alt="Free Image Hosting at www.ImageShack.us" /></a><br />
+<br />
+Now we're going to the coding part. Bring up the coding window by double clicking the "Add account" button. There you fill in:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font> Command1_Click()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> info <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> String</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Loop over each column in the listview<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>i = 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font>lstUsers.ColumnHeaders.Count<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Ask what to fill in, for example username<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">6</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">info = InputBox("What to fill in at " & lstUsers.ColumnHeaders(i).Text & "?")<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">7</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> i = 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">8</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'If it's the first item, create it<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">9</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.ListItems.Add , , info<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">10</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Else</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">11</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Otherwise, add subitems to it<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">12</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.ListItems.Item(lstUsers.ListItems.Count).List<font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font>Items.Add , , info<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">13</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">14</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">15</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font></font></td></tr></table><br />
+<br />
+When you test, you'll see you can add accounts!<br />
+Let's add the remove function...<br />
+<br />
+Double click on the Remove button and fill in:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font> Command2_Click()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Delete the selected item, if there is nothing selected, don't shut down the program<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">On Error Resume</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.ListItems.Remove lstUsers.SelectedItem.Index<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font></font></td></tr></table><br />
+<br />
+When you add an account, select it and press the delete key, it's gone :)<br />
+<br />
+Let's ban some accounts :D<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font> Command3_Click()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Change the fifth subitem of the selected item<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">On Error Resume</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.SelectedItem.List<font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font>Items.Item(5).Text = "<font color="#000080" face="Courier New, Courier, monospace" size="2">True</font>"<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font></font></td></tr></table><br />
+<br />
+Now it goes almost exactly the same with the unban button...<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font> Command4_Click()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Change the fifth subitem of the selected item again<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">On Error Resume</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.SelectedItem.List<font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font>Items.Item(5).Text = "<font color="#000080" face="Courier New, Courier, monospace" size="2">False</font>"<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Sub</font></font></td></tr></table><br />
+<br />
+Now you can create, delete, ban and unban accounts! Now we're going to save and open lists.<br />
+<br />
+Add the component Microsoft Common Dialog Control and put in on your form with the name "opensave".<br />
+<br />
+Double click on the save button and enter:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> Command5_Click()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Remove the stored filename<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">opensave.FileName = ""<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Set the filter, so that it filters .mil files<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">opensave.Filter = "MyIRC Userlists (*.mil)|*.mil"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">6</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Show the save window<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">7</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">opensave.ShowSave<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">8</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Check if a file was selected<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">9</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> opensave.FileName <> "" <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">10</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Collect the items in the ListView<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">11</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> items, infos <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> String</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">12</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>i = 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font>lstUsers.ListItems.Count<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">13</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">infos = ""<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">14</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>ii = 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font>lstUsers.ListItems.Item(i).ListSubItems.Count<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">15</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">infos = infos & lstUsers.ListItems.Item(i).ListSubItems.Item(ii).text & "|"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">16</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">17</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">infos = lstUsers.ListItems.Item(i).text & "|" & infos<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">18</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">items = items & infos & "*"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">19</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">20</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Save the file<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">21</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> hFile <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Long</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">22</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">hFile = FreeFile<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">23</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Open </font>opensave.FileName <font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>Output <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font> #hFile<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">24</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">Print #hFile, items<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">25</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Close</font> #hFile<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">26</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">27</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+Now we're going to open lists:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> Command6_Click()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Dialog thingy again<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">opensave.FileName = ""<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">opensave.Filter = "MyIRC Userlists (*.mil)|*.mil"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">opensave.ShowOpen<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">6</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">7</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> opensave.FileName <> "" <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">8</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Clear the listview<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">9</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.ListItems.Clear<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">10</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">11</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Open the file<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">12</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> content <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> String</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">13</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">fnum = FreeFile<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">14</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Open </font>opensave.FileName <font color="#000080" face="Courier New, Courier, monospace" size="2">For </font><font color="#000080" face="Courier New, Courier, monospace" size="2">Input </font><font color="#000080" face="Courier New, Courier, monospace" size="2">As</font> fnum<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">15</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">content = Input$(LOF(fnum), #fnum)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">16</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Close</font> fnum<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">17</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Now the file is stored into "content"<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">18</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Now process it:<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">19</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> items() <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> String</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">20</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> headers() <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> String</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">21</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Split the items into an array<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">22</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">items = Split(content, "*")<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">23</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Now loop over all items<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">24</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>i = 0 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font><font color="#000080" face="Courier New, Courier, monospace" size="2">UBound</font>(items) - 1<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">25</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Get the headers (username, password, etc)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">26</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">headers = Split(items(i), "|")<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">27</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Loop over the headers<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">28</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>ii = 0 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font><font color="#000080" face="Courier New, Courier, monospace" size="2">UBound</font>(headers) - 1<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">29</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> ii = 0 <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">30</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Create the item<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">31</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.ListItems.Add , , headers(ii)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">32</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Else</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">33</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Or at the subitems<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">34</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">lstUsers.ListItems.Item(lstUsers.ListItems.Count).ListSubItems.Add , , headers(ii)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">35</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">36</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">37</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">38</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">39</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+Do you want to know how many lines we've written already? Well the amount of lines is <b>101</b>!<br />
+<br />
+In the programmer world it's not much though.<br />
+Let's continue! Our server database management thing is done. Let's go to the socket system!<br />
+<br />
+<b>Creating the server PART 2</b><br />
+<br />
+Add the component Microsoft Winsock Control 6.0 and put in on your from. Call it sckServer, set the localport to 1768. This is the port we're going to use. Now create a second winsock and call it sckUsers. Set the Index to 0.<br />
+<br />
+Let's go code!<br />
+<br />
+Put this in the form_load event:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> Form_Load()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Let the server socket wait for connections<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.Listen<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+Now put this in the sckServer_ConnectRequest event:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> sckServer_ConnectionRequest(<font color="#000080" face="Courier New, Courier, monospace" size="2">ByVal</font> requestID <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Long</font>)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Close the socket and accept the connection<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.<font color="#000080" face="Courier New, Courier, monospace" size="2">Close</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.Accept requestID<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+When the client has connected (after accepting the connection), the server must wait 10 seconds for the user authentication, before closing the connection. That's why we create a timer with an Interval of 10000 (miliseconds). Set Enabled to False. Call it "tmBeforeDisc".<br />
+<br />
+Double click on it and enter the code:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> tmBeforeDisc_Timer()<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Send a time out message to connected the client<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.SendData "TIME OUT"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Disconnect and listen again<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.<font color="#000080" face="Courier New, Courier, monospace" size="2">Close</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">6</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.Listen<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">7</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+Now, if the client sends authentication info, the server must process it. Let's code that.<br />
+<br />
+Go to the sub sckServer_DataArrival and enter this code:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> sckServer_DataArrival(<font color="#000080" face="Courier New, Courier, monospace" size="2">ByVal</font> bytesTotal <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Long</font>)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Put the received data in a string<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> data <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> String</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.GetData data<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Process it<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">6</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> info() <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> String</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">7</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">info = Split(data, "|")<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">8</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'The client has to send data in this format:<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">9</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'username|password|version<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">10</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'So the server can check the authentication, send the contactlist and check for updates<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">11</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> info(2) < 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">12</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Not the latest version, send info. With ERR we let the client know, something went wrong.<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">13</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.SendData "ERR You don't have the latest version!"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">14</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">Exit<font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">15</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Else</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">16</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Version is good, let's look for the login data<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">17</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> indx <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Long</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">18</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>i = 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font>lstUsers.ListItems.Count<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">19</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> lstUsers.ListItems.Item(i).ListSubItems.Item(1) = info(0) <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">20</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">indx = i<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">21</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Exit </font>For<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">22</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">23</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">24</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">25</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> indx = 0 <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">26</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Account not found, let the user know...<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">27</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.SendData "ERR The account doesn't exist!"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">28</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">Exit<font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">29</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Else</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">30</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Found the user, check the password<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">31</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> lstUsers.ListItems.Item(indx).ListSubItems.Item(2) = info(1) <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">32</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Password is correct<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">33</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'The user will be forwarded to an user socket<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">34</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.SendData "OK " & Len(info(0)) * Len(info(1)) + Len(info(1))<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">35</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">Exit<font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">36</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Else</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">37</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Password is wrong<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">38</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer.SendData "ERR Wrong password!"<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">39</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">Exit<font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">40</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">41</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">42</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">43</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">44</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+This code checks if the user has the right version and checks the authentication. If everything's ok, the server sends a simple code. Now the client has to connect to a second server on port 1770. Instead of<br />
+<br />
+username|password|version<br />
+<br />
+it sends:<br />
+<br />
+username|password|code<br />
+<br />
+This might be unsecure, but I you get a better code, it might be a lot safer! The idea of this is:<br />
+<br />
+The client connects to the authentication server (port 1768)<br />
+<br />
+The client sends the information, so it can check everything is alright.<br />
+<br />
+The client connects to the login server on port 1770 and sends the code as a confirmation.<br />
+<br />
+In this way the client can check if it has the right version and if so, it can continue. Of course your client can safe this code to reduce login time. But it can check the version every time it wants!<br />
+<br />
+Well, let's continue, now the main thing; the peer -> client -> peer system!<br />
+<br />
+Now we're going to build the second server on port 1770. Create a new winsock control and call it sckServer2 (how original!). Set the localport to 1770 and double click on it and go to the sub sckServer2_ConnectionRequest.<br />
+<br />
+Now enter the following code:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> sckServer2_ConnectionRequest(<font color="#000080" face="Courier New, Courier, monospace" size="2">ByVal</font> requestID <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Long</font>)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Look for an empty socket<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Dim</font> indx <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Long</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>i = 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font>100<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Found something!<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">6</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> sckUsers(i).State = 0 <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">7</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">indx = i<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">8</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Exit </font>For<br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">9</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">10</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">11</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">12</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Now forward the client to the user socket<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">13</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckUsers(i).Accept requestID<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">14</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer2.<font color="#000080" face="Courier New, Courier, monospace" size="2">Close</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">15</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckServer2.Listen 'Again<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">16</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">17</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'After the clients forwarding, it has to send the login information, we'll see that<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">18</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'In the DataArrival sub!<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">19</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+First declare the array users with 100 items:<br />
+Private users(100) As String<br />
+Now the close thingy:<br />
+<br />
+  <table width="700" border="0"><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">1</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Private</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font> sckUsers_<font color="#000080" face="Courier New, Courier, monospace" size="2">Close</font>(Index <font color="#000080" face="Courier New, Courier, monospace" size="2">As</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">Integer</font>)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">2</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Make sure it's closed<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">3</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckUsers(Index).<font color="#000080" face="Courier New, Courier, monospace" size="2">Close</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">4</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Free up memory<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">5</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">Unload sckUsers(Index)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">6</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Now let other people who have this person in their list know he went offline<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">7</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>i = 1 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font>lstUsers.ListItems.Count<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">8</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Check if the person is not offline<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">9</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> lstUsers.ListItems.Item(i).ListSubItems.Item(3) <> "0" <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">10</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Now check is this people know each other<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">11</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> InStr(lstUsers.ListItems.Item(i).ListSubItems.Item(6), user(Index)) <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">12</font></td><td width="700"><font color="#008000" face="Courier New, Courier, monospace" size="2">'Search the socket, the user is connected too<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">13</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">For </font>ii = 0 <font color="#000080" face="Courier New, Courier, monospace" size="2">To </font><font color="#000080" face="Courier New, Courier, monospace" size="2">UBound</font>(user)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">14</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">If</font> user(ii) = lstUsers.ListItems.Item(i).ListSubItems.Item(1) <font color="#000080" face="Courier New, Courier, monospace" size="2">Then</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">15</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">sckUsers(ii).SendData "OFF " & user(Index)<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">16</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2">Exit<font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">17</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">18</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">19</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+<br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">20</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font> <font color="#000080" face="Courier New, Courier, monospace" size="2">If</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">21</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">Next</font><br />
+</font></td></tr><tr><td width="36" bgcolor="#CCCCCC"><font color="#000000" face="Courier New, Courier, monospace" size="2">22</font></td><td width="700"><font color="#000000" face="Courier New, Courier, monospace" size="2"><font color="#000080" face="Courier New, Courier, monospace" size="2">End</font><font color="#000080" face="Courier New, Courier, monospace" size="2"> Sub</font></font></td></tr></table><br />
+<br />
+This script is a bit complicated, but it's well commented, so I think you'll understand it, otherwise leave a message!<br />
+<br />
+I hope you understand;<br />
+In the user array the username who logged in onto a socket is storred.<br />
+<br />
+For example, if testuser is forwarded to sckUsers(4) then user(4) = testuser.<br />
+<br />
+<h2>To be continued</h2>
